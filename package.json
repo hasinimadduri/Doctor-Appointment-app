@@ -4,14 +4,15 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "server": "nodemon server.js"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "keywords": [],
-  "author": "techinfo yt",
+  "author": "hasini",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "colors": "^1.4.0",
     "cors": "^2.8.5",
