@@ -3,35 +3,46 @@ import dotenv from "dotenv";
 import "colors";
 import morgan from "morgan";
 import cors from "cors";
-import testRoutes from "./routes/testRoutes.js";
+import mongoose from "mongoose";
 import appointmentRoutes from "./routes/appointmentRoutes.js";
 
-//conig env var
+// Load environment variables
 dotenv.config();
 
-//rest object
+// Initialize express app
 const app = express();
 
-//middlewares
+// Middlewares
 app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
 
-//routes
-app.use("/api/v1/test", testRoutes);
+// MongoDB Connection
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log("✅ MongoDB Connected".bgGreen.white);
+  } catch (error) {
+    console.log(`❌ MongoDB Connection Error: ${error.message}`.bgRed.white);
+    process.exit(1);
+  }
+};
+connectDB();
 
+// Base API Test Route
 app.get("/", (req, res) => {
-  res.send("<h1> Node Server Running </h1>");
+  res.send("<h1>✅ Node Server Running Successfully</h1>");
 });
 
-//port
+// API Routes
+app.use("/api/v1/appointments", appointmentRoutes);
+
+// Port Config
 const PORT = process.env.PORT || 5000;
 
-//run server
+// Start Server
 app.listen(PORT, () => {
   console.log(
-    `Node Server Ruuning in ${process.env.NODE_ENV} Mode On Port ${PORT}`.bgCyan
-      .white
+    `🚀 Server Running in ${process.env.NODE_ENV} Mode on Port ${PORT}`.bgCyan.white
   );
 });
-app.use('/api/v1/appointments', appointmentRoutes)
